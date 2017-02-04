@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Understanding JavaScript's Capture</title>
+</head>
+<body class="bod">
+
+  <div class="one">
+    <div class="two">
+      <div class="three">
+      </div>
+    </div>
+  </div>
+
+<style>
+  html {
+    box-sizing: border-box;
+  }
+  *, *:before, *:after { box-sizing: inherit; }
+
+  div {
+    width:100%;
+    padding:100px;
+  }
+
+  .one {
+    background: thistle;
+  }
+
+  .two {
+    background:mistyrose;
+  }
+
+  .three {
+    background:coral;
+  }
+</style>
+
+<button>button that works once with the "once" option. for example in a checkout</button>
+<script>
+
+  const divs = document.querySelectorAll('div');
+  const button = document.querySelector('button');
+
+  function logText(e) {
+    console.log(this.classList.value);
+    // stopPropagation makes it only select what you actually clicked on instead of the typical behavior which is that it selects what you clicked on and everything that's a parent of it.
+    // e.stopPropagation(); // stop bubbling
+  }
+
+  //document.body.addEventListener('click', logText);
+
+  // here we're adding a few options to our event listener in the {}.
+  divs.forEach(div => div.addEventListener('click', logText, {
+    capture: false,
+    // once causes it to fire once and then unbinds it. so the evenlistener 'click' doesn't work after one use.
+    once: true
+  }));
+
+  button.addEventListener('click', () => {
+    console.log('Click!!!');
+  }, {
+    once: true
+  });
+</script>
+</body>
+</html>
